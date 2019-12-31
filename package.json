@@ -1,0 +1,12 @@
+{
+  "name": "nodeshop",
+  "version": "0.1.0",
+  "description": "Webshop built with Node.js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "github:matiisi/nodeshop",
+  "author": "matiisi",
+  "license": "UNLICENSED"
+}
