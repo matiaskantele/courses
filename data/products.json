@@ -1,16 +1,1 @@
-[
-  {
-    "id": "1234",
-    "title": "Book",
-    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/41fhsnzKEgL._SX258_BO1,204,203,200_.jpg",
-    "description": "It's a nice book",
-    "price": "10"
-  },
-  {
-    "id": "4321",
-    "title": "Cat",
-    "imageUrl": "https://static01.nyt.com/images/2019/09/04/business/04chinaclone-01/merlin_160087014_de761d9a-4360-402d-a15b-ddeff775760d-articleLarge.jpg",
-    "description": "It doesn't care about you.",
-    "price": "15.09"
-  }
-]
+[{"id":"1234","title":"Book","imageUrl":"https://images-na.ssl-images-amazon.com/images/I/41fhsnzKEgL._SX258_BO1,204,203,200_.jpg","description":"It's a nice book","price":"10"},{"id":"4321","title":"Cat (evil)","imageUrl":"https://static01.nyt.com/images/2019/09/04/business/04chinaclone-01/merlin_160087014_de761d9a-4360-402d-a15b-ddeff775760d-articleLarge.jpg","description":"It doesn't care about you!!!","price":"15.54"}]
