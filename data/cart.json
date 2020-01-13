@@ -1,1 +1,7 @@
-{"products":[{"id":"1234","qty":2},{"id":"4321","qty":1}],"totalPrice":35.09}
+{
+  "products": [
+    { "id": "1234", "qty": 1 },
+    { "id": "4321", "qty": 2 }
+  ],
+  "totalPrice": 41.08
+}
