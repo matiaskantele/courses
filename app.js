@@ -2,6 +2,8 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 
+const sequelize = require("./util/db");
+
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
@@ -19,4 +21,10 @@ app.use(shopRoutes);
 
 app.use(notFoundController.get404);
 
-app.listen(3000);
+sequelize
+  .sync()
+  .then(res => {
+    // console.log(res);
+    app.listen(3000);
+  })
+  .catch(err => console.log(err));
