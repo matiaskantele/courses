@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  mysql-development:
+    image: mysql:8.0.19
+    environment:
+      MYSQL_ROOT_PASSWORD: helloworld
+      MYSQL_DATABASE: nodeshop
+    ports:
+      - "3306:3306"
