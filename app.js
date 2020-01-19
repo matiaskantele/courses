@@ -3,6 +3,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const sequelize = require("./util/db");
+const Product = require("./models/product");
+const User = require("./models/user");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
@@ -21,8 +23,14 @@ app.use(shopRoutes);
 
 app.use(notFoundController.get404);
 
+Product.belongsTo(User, {
+  constraints: true,
+  onDelete: "CASCADE",
+});
+User.hasMany(Product);
+
 sequelize
-  .sync()
+  .sync({ force: true })
   .then(res => {
     // console.log(res);
     app.listen(3000);
