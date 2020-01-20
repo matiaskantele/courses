@@ -1,19 +1,14 @@
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
+dotenv.config();
 
-const sequelize = require("./util/db");
-const Product = require("./models/product");
-const User = require("./models/user");
-const Cart = require("./models/cart");
-const CartItem = require("./models/cart-item");
-const Order = require("./models/order");
-const OrderItem = require("./models/order-item");
-
-const adminRoutes = require("./routes/admin");
-const shopRoutes = require("./routes/shop");
+// const adminRoutes = require("./routes/admin");
+// const shopRoutes = require("./routes/shop");
 
 const notFoundController = require("./controllers/notFound");
+const mongoConnect = require("./util/db");
 
 const app = express();
 
@@ -23,62 +18,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
-  User.findByPk(1)
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => console.log(err));
+  // User.findByPk(1)
+  //   .then(user => {
+  //     req.user = user;
+  //     next();
+  //   })
+  //   .catch(err => console.log(err));
 });
 
-app.use("/admin", adminRoutes);
-app.use(shopRoutes);
+// app.use("/admin", adminRoutes);
+// app.use(shopRoutes);
 
 app.use(notFoundController.get404);
 
-Product.belongsTo(User, {
-  constraints: true,
-  onDelete: "CASCADE",
+mongoConnect(client => {
+  app.listen(3000);
 });
-User.hasMany(Product);
-User.hasOne(Cart);
-Cart.belongsTo(User);
-Cart.belongsToMany(Product, { through: CartItem });
-Product.belongsToMany(Cart, { through: CartItem });
-Order.belongsTo(User);
-User.hasMany(Order);
-Order.belongsToMany(Product, { through: OrderItem });
-
-let user;
-
-sequelize
-  // .sync({ force: true })
-  .sync()
-  .then(res => {
-    return User.findByPk(1);
-    // console.log(res);
-  })
-  .then(user => {
-    // Create user if one doesn't exist
-    if (!user) {
-      return User.create({ name: "Matias", email: "test@test.com" });
-    }
-    return user;
-  })
-  .then(loggedInUser => {
-    user = loggedInUser;
-    user
-      .getCart()
-      .then(cart => {
-        console.log(cart);
-        if (!cart) {
-          return user.createCart();
-        }
-        return cart;
-      })
-      .catch(err => console.log(err));
-  })
-  .then(() => {
-    app.listen(3000);
-  })
-  .catch(err => console.log(err));

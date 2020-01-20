@@ -1,8 +1,18 @@
-const Sequelize = require("sequelize");
+const mongodb = require("mongodb");
+const MongoClient = mongodb.MongoClient;
 
-const sequelize = new Sequelize("nodeshop", "root", "helloworld", {
-  dialect: "mysql",
-  host: "localhost",
-});
+const mongoURI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@nodeshop-7k3bh.gcp.mongodb.net/test?retryWrites=true&w=majority`;
 
-module.exports = sequelize;
+const mongoConnect = callback => {
+  MongoClient.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+    .then(client => {
+      console.log("Connected to MongoDB!");
+      callback(client);
+    })
+    .catch(err => console.log(err));
+};
+
+module.exports = mongoConnect;
