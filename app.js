@@ -4,11 +4,11 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 dotenv.config();
 
-// const adminRoutes = require("./routes/admin");
+const adminRoutes = require("./routes/admin");
 // const shopRoutes = require("./routes/shop");
 
 const notFoundController = require("./controllers/notFound");
-const mongoConnect = require("./util/db");
+const mongoConnect = require("./util/db").mongoConnect;
 
 const app = express();
 
@@ -24,13 +24,14 @@ app.use((req, res, next) => {
   //     next();
   //   })
   //   .catch(err => console.log(err));
+  next();
 });
 
-// app.use("/admin", adminRoutes);
+app.use("/admin", adminRoutes);
 // app.use(shopRoutes);
 
 app.use(notFoundController.get404);
 
-mongoConnect(client => {
+mongoConnect(() => {
   app.listen(3000);
 });
