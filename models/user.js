@@ -2,8 +2,10 @@ const mongodb = require("mongodb");
 const getDb = require("../util/db").getDb;
 
 class User {
-  constructor(username, email) {
-    (this.name = username), (this.email = email);
+  constructor(username, email, cart) {
+    this.name = username;
+    this.email = email;
+    this.cart = cart;
   }
 
   save() {
