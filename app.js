@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const adminRoutes = require("./routes/admin");
-// const shopRoutes = require("./routes/shop");
+const shopRoutes = require("./routes/shop");
 
 const notFoundController = require("./controllers/notFound");
 const mongoConnect = require("./util/db").mongoConnect;
@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/admin", adminRoutes);
-// app.use(shopRoutes);
+app.use(shopRoutes);
 
 app.use(notFoundController.get404);
 
