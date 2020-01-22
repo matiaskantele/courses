@@ -10,10 +10,10 @@ block content
       ul
         each o in orders
           li
-            h1 ##{o.id}
+            h1 ##{o._id}
             ul
-              each product in o.products
+              each product in o.items
                 li
-                  p #{product.title} (#{product.orderItem.quantity})
+                  p #{product.title} (#{product.quantity})
     else
       h1 Nothing there!
