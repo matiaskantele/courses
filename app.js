@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -8,7 +9,6 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
 const notFoundController = require("./controllers/notFound");
-const mongoConnect = require("./util/db").mongoConnect;
 const User = require("./models/user");
 
 const app = express();
@@ -32,6 +32,12 @@ app.use(shopRoutes);
 
 app.use(notFoundController.get404);
 
-mongoConnect(() => {
-  app.listen(3000);
-});
+const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@nodeshop-7k3bh.gcp.mongodb.net/test?retryWrites=true&w=majority`;
+const options = { useNewUrlParser: true, useUnifiedTopology: true };
+
+mongoose
+  .connect(uri, options)
+  .then(() => {
+    app.listen(3000);
+  })
+  .catch(err => console.log(err));
