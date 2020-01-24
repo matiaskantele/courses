@@ -9,9 +9,9 @@ block content
       ul
         each p in products
           li
-            p #{p.title} (#{p.quantity})
+            p #{p.productId.title} (#{p.quantity})
             form(action="/cart-delete-item" method="POST")
-              input(type="hidden", name="productId", value=p._id)
+              input(type="hidden", name="productId", value=p.productId._id)
               button.btn(type="submit") Delete
       hr
       form(action="/create-order" method="POST")
