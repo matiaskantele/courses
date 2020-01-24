@@ -12,8 +12,8 @@ block content
           li
             h1 ##{o._id}
             ul
-              each product in o.items
+              each p in o.products
                 li
-                  p #{product.title} (#{product.quantity})
+                  p #{p.product.title} (#{p.quantity})
     else
       h1 Nothing there!
