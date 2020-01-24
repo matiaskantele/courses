@@ -8,7 +8,6 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'Open Sans', sans-serif;
-  background-color: #004445;
 }
 
 main {
@@ -35,7 +34,7 @@ form {
 .main-header {
   width: 100%;
   height: 3.5rem;
-  background-color: #f8b400;
+  background-color: #00695c;
   padding: 0 1.5rem;
   display: flex;
   align-items: center;
@@ -86,7 +85,7 @@ form {
   position: fixed;
   left: 0;
   top: 0;
-  background: #004445;
+  background: white;
   z-index: 10;
   padding: 2rem 1rem 1rem 2rem;
   transform: translateX(-100%);
@@ -112,7 +111,7 @@ form {
 
 .mobile-nav__item a {
   text-decoration: none;
-  color: #faf5e4;
+  color: black;
   font-size: 1.5rem;
   padding: 0.5rem 2rem;
 }
@@ -121,7 +120,7 @@ form {
 .mobile-nav__item a:hover,
 .mobile-nav__item a.active {
   background: #00695c;
-  color: #f8b400;
+  color: white;
   border-radius: 3px;
 }
 
@@ -165,7 +164,6 @@ form {
 
 .card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  background-color: #2c786c;
 }
 
 .card__header,
