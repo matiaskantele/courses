@@ -9,20 +9,21 @@
   width: 20rem;
   max-width: 95%;
   margin: 1rem;
-  background-color: #222831;
 }
 
 .product__title {
   font-size: 1.2rem;
   text-align: center;
+  color: #faf5e4;
 }
 
 .product__price {
   text-align: center;
-  color: #4d4d4d;
+  color: #faf5e4;
   margin-bottom: 0.5rem;
 }
 
 .product__description {
   text-align: center;
+  color: #faf5e4;
 }
