@@ -31,6 +31,8 @@ html(lang="en")
           if !isAuthenticated
             li.main-header__item
               a(href="/login", class=(path === "/login" ? "active" : "")) Login
+            li.main-header__item
+              a(href="/signup", class=(path === "/signup" ? "active" : "")) Signup
           else
             li.main-header__item
               form(action="/logout", method="POST")
@@ -41,14 +43,24 @@ html(lang="en")
           a(href="/", class=(path === "/" ? "active" : "")) Shop
         li.mobile-nav__item
           a(href="/", class=(path === "/products" ? "active" : "")) Products
-        li.mobile-nav__item
-          a(href="/", class=(path === "/cart" ? "active" : "")) Cart
-        li.mobile-nav__item
-          a(href="/", class=(path === "/orders" ? "active" : "")) Orders
-        li.mobile-nav__item
-          a(href="/", class=(path === "/admin/add-product" ? "active" : "")) Add Product
-        li.mobile-nav__item
-          a(href="/", class=(path === "/admin/products" ? "active" : "")) Admin Products
+        if isAuthenticated
+          li.mobile-nav__item
+            a(href="/", class=(path === "/cart" ? "active" : "")) Cart
+          li.mobile-nav__item
+            a(href="/", class=(path === "/orders" ? "active" : "")) Orders
+          li.mobile-nav__item
+            a(href="/", class=(path === "/admin/add-product" ? "active" : "")) Add Product
+          li.mobile-nav__item
+            a(href="/", class=(path === "/admin/products" ? "active" : "")) Admin Products
+        if !isAuthenticated
+          li.mobile-nav__item
+            a(href="/login", class=(path === "/login" ? "active" : "")) Login
+          li.mobile-nav__item
+            a(href="/signup", class=(path === "/signup" ? "active" : "")) Signup
+        else
+          li.mobile-nav__item
+            form(action="/logout", method="POST")
+              button(type="submit") Logout
 
     block content
     script(src='/js/main.js')
