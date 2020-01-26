@@ -8,7 +8,7 @@ exports.getIndex = (req, res, next) => {
         prods: products,
         pageTitle: 'Shop',
         path: '/',
-        isAuthenticated: req.isLoggedIn,
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch(err => console.log(err));
@@ -21,7 +21,7 @@ exports.getProducts = (req, res, next) => {
         prods: products,
         pageTitle: 'All Products',
         path: '/products',
-        isAuthenticated: req.isLoggedIn,
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch(err => console.log(err));
@@ -35,7 +35,7 @@ exports.getProduct = (req, res, next) => {
         product,
         pageTitle: product.title,
         path: '/products',
-        isAuthenticated: req.isLoggedIn,
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch(err => console.log(err));
@@ -51,7 +51,7 @@ exports.getCart = (req, res, next) => {
         pageTitle: 'Your Cart',
         path: '/cart',
         products,
-        isAuthenticated: req.isLoggedIn,
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch(err => console.log(err));
@@ -69,7 +69,7 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  req.user
+  req.session
     .removeFromCart(prodId)
     .then(() => {
       res.redirect('/cart');
@@ -78,7 +78,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-  req.user
+  req.session.user
     .populate('cart.items.productId')
     .execPopulate()
     .then(user => {
@@ -107,7 +107,7 @@ exports.getOrders = (req, res, next) => {
         pageTitle: 'Your Orders',
         path: '/orders',
         orders,
-        isAuthenticated: req.isLoggedIn,
+        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch(err => console.log(err));
@@ -117,6 +117,6 @@ exports.getCheckout = (req, res, next) => {
   res.render('shop/checkout', {
     pageTitle: 'Checkout',
     path: '/checkout',
-    isAuthenticated: req.isLoggedIn,
+    isAuthenticated: req.session.isLoggedIn,
   });
 };
