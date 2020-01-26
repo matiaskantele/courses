@@ -1,5 +1,7 @@
 const path = require('path');
 const express = require('express');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -13,12 +15,26 @@ const authRoutes = require('./routes/auth');
 const notFoundController = require('./controllers/notFound');
 const User = require('./models/user');
 
+const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@nodeshop-7k3bh.gcp.mongodb.net/shop?retryWrites=true&w=majority`;
+
 const app = express();
+const store = new MongoDBStore({
+  uri: MONGODB_URI,
+  collection: 'sessions',
+});
 
 app.set('view engine', 'pug');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store,
+  })
+);
 
 app.use((req, res, next) => {
   User.findById('5e28be82532a6c8d06f5e534')
@@ -35,11 +51,10 @@ app.use(authRoutes);
 
 app.use(notFoundController.get404);
 
-const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@nodeshop-7k3bh.gcp.mongodb.net/shop?retryWrites=true&w=majority`;
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 
 mongoose
-  .connect(uri, options)
+  .connect(MONGODB_URI, options)
   .then(() => {
     User.findOne().then(user => {
       if (!user) {
