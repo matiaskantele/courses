@@ -6,12 +6,14 @@ block styles
 
 block content
   main
-      form.login-form(action="/login", method="POST")
-        .form-control
-          label(for="email") E-Mail
-          input(type="email" name="email")#email
-        .form-control
-          label(for="password") Password
-          input(type="password" name="password" )#password
-        input(type="hidden", name="_csrf", value=csrfToken)
-        button.btn(type="submit") Login
+    if errorMessage
+      .user-message.user-message--error #{errorMessage}
+    form.login-form(action="/login", method="POST")
+      .form-control
+        label(for="email") E-Mail
+        input(type="email" name="email")#email
+      .form-control
+        label(for="password") Password
+        input(type="password" name="password" )#password
+      input(type="hidden", name="_csrf", value=csrfToken)
+      button.btn(type="submit") Login
