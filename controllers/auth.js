@@ -19,15 +19,30 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  User.findById('5e28be82532a6c8d06f5e534').then(user => {
-    req.session.isLoggedIn = true;
-    req.session.user = user;
-    req.session.save(err => {
-      if (err) {
+  const { email, password } = req.body;
+  User.findOne({ email }).then(user => {
+    if (!user) {
+      res.redirect('/login');
+    }
+    bcrypt
+      .compare(password, user.password)
+      .then(matchingPassword => {
+        if (matchingPassword) {
+          req.session.isLoggedIn = true;
+          req.session.user = user;
+          return req.session.save(err => {
+            if (err) {
+              console.log(err);
+            }
+            res.redirect('/');
+          });
+        }
+        res.redirect('/login');
+      })
+      .catch(err => {
         console.log(err);
-      }
-      res.redirect('/');
-    });
+        res.redirect('/login');
+      });
   });
 };
 
