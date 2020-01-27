@@ -1,4 +1,7 @@
 const bcrypt = require('bcryptjs');
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const User = require('../models/user');
 
@@ -75,7 +78,16 @@ exports.postSignup = (req, res, next) => {
         return user.save();
       });
     })
-    .then(() => res.redirect('/login'))
+    .then(() => {
+      res.redirect('/login');
+      return sgMail.send({
+        to: email,
+        from: 'shop@nodeshop.com',
+        subject: 'NodeShop Account Created!',
+        text: 'You are awesome!',
+        html: '<h1>You successfully signed up!</h1>',
+      });
+    })
     .catch(err => console.log(err));
 };
 
