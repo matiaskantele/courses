@@ -1,9 +1,13 @@
+const crypto = require('crypto');
+
 const bcrypt = require('bcryptjs');
 const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const User = require('../models/user');
+
+const ONE_HOUR = 3600000;
 
 exports.getLogin = (req, res, next) => {
   const errors = req.flash('error');
@@ -110,5 +114,39 @@ exports.getReset = (req, res, next) => {
     pageTitle: 'Reset Password',
     path: '/reset-password',
     errorMessage: message,
+  });
+};
+
+exports.postReset = (req, res, next) => {
+  crypto.randomBytes(32, (err, buffer) => {
+    if (err) {
+      req.flash('error', 'Password Reset Failed.');
+      return res.redirect('/reset-password');
+    }
+    const token = buffer.toString('hex');
+    User.findOne({ email: req.body.email })
+      .then(user => {
+        if (!user) {
+          req.flash('error', 'No account found with email.');
+          return res.redirect('/reset-password');
+        }
+        user.resetToken = token;
+        user.resetTokenExpiration = Date.now() + ONE_HOUR;
+        return user.save();
+      })
+      .then(() => {
+        res.redirect('/');
+        sgMail.send({
+          to: req.body.email,
+          from: 'shop@nodeshop.com',
+          subject: 'Password Reset',
+          html: `
+            <p>Password reset requested.</p>
+            <p>The following password reset link is valid for one hour:</p>
+            <a href="http://localhost:3000/reset-password/${token}">Reset Password</a>
+          `,
+        });
+      })
+      .catch(err => console.log(err));
   });
 };
