@@ -11,12 +11,12 @@ block content
       form.login-form(action="/signup", method="POST")
         .form-control
           label(for="email") E-Mail
-          input(type="email" name="email" value=oldInput.email class=validationErrors.email)#email
+          input(class=validationErrors.email type="email" name="email" value=oldInput.email)#email
         .form-control
           label(for="password") Password
-          input(type="password" name="password" value=oldInput.password class=validationErrors.password)#password
+          input(class=validationErrors.password type="password" name="password" value=oldInput.password)#password
         .form-control
           label(for="confirmPassword") Confirm Password
-          input(type="password" name="confirmPassword" value=oldInput.confirmPassword class=validationErrors.confirmPassword)#confirmPassword
+          input(class=validationErrors.confirmPassword type="password" name="confirmPassword" value=oldInput.confirmPassword)#confirmPassword
         input(type="hidden", name="_csrf", value=csrfToken)
         button.btn(type="submit") Signup
