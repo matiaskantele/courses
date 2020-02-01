@@ -20,6 +20,10 @@ exports.getLogin = (req, res, next) => {
     pageTitle: 'Login',
     path: '/login',
     errorMessage: message,
+    oldInput: {
+      email: '',
+      password: '',
+    },
   });
 };
 
@@ -33,11 +37,30 @@ exports.getSignup = (req, res, next) => {
     pageTitle: 'Signup',
     path: '/signup',
     errorMessage: message,
+    oldInput: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    validationErrors: [],
   });
 };
 
 exports.postLogin = (req, res, next) => {
   const { email, password } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).render('auth/login', {
+      pageTitle: 'Login',
+      path: '/login',
+      errorMessage: errors.array()[0].msg,
+      oldInput: {
+        email,
+        password,
+        confirmPassword: req.body.confirmPassword,
+      },
+    });
+  }
   User.findOne({ email }).then(user => {
     if (!user) {
       req.flash('error', 'Invalid email or password.');
@@ -74,6 +97,20 @@ exports.postSignup = (req, res, next) => {
       pageTitle: 'Signup',
       path: '/signup',
       errorMessage: errors.array()[0].msg,
+      oldInput: {
+        email,
+        password,
+        confirmPassword: req.body.confirmPassword,
+      },
+      validationErrors: {
+        email: errors.array().find(e => e.param === 'email') ? 'invalid' : '',
+        password: errors.array().find(e => e.param === 'password')
+          ? 'invalid'
+          : '',
+        confirmPassword: errors.array().find(e => e.param === 'confirmPassword')
+          ? 'invalid'
+          : '',
+      },
     });
   }
   bcrypt

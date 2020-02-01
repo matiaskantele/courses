@@ -10,7 +10,18 @@ router.get('/login', authController.getLogin);
 
 router.get('/signup', authController.getSignup);
 
-router.post('/login', authController.postLogin);
+router.post(
+  '/login',
+  [
+    body('email')
+      .isEmail()
+      .withMessage('Please enter a valid email.'),
+    body('password')
+      .isLength({ min: 4 })
+      .withMessage('Password must be at least 4 characters long.'),
+  ],
+  authController.postLogin
+);
 
 router.post(
   '/signup',
@@ -31,8 +42,8 @@ router.post(
       ),
     body(
       'password',
-      'The password must be at least 5 characters long.'
-    ).isLength({ min: 8 }),
+      'The password must be at least 4 characters long.'
+    ).isLength({ min: 4 }),
     body('confirmPassword').custom((value, { req }) => {
       if (value !== req.body.password) {
         throw new Error('Passwords do not match.');
