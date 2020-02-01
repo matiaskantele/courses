@@ -2,6 +2,7 @@ const crypto = require('crypto');
 
 const bcrypt = require('bcryptjs');
 const sgMail = require('@sendgrid/mail');
+const { validationResult } = require('express-validator/check');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -67,6 +68,14 @@ exports.postLogin = (req, res, next) => {
 
 exports.postSignup = (req, res, next) => {
   const { email, password, confirmPassword } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).render('auth/signup', {
+      pageTitle: 'Signup',
+      path: '/signup',
+      errorMessage: errors.array()[0].msg,
+    });
+  }
   User.findOne({ email })
     .then(userDoc => {
       if (userDoc) {
