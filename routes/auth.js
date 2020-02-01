@@ -15,10 +15,12 @@ router.post(
   [
     body('email')
       .isEmail()
-      .withMessage('Please enter a valid email.'),
+      .withMessage('Please enter a valid email.')
+      .normalizeEmail(),
     body('password')
       .isLength({ min: 4 })
-      .withMessage('Password must be at least 4 characters long.'),
+      .withMessage('Password must be at least 4 characters long.')
+      .trim(),
   ],
   authController.postLogin
 );
@@ -39,17 +41,19 @@ router.post(
             return Promise.reject(new Error('Email already in use.'));
           }
         })
-      ),
-    body(
-      'password',
-      'The password must be at least 4 characters long.'
-    ).isLength({ min: 4 }),
-    body('confirmPassword').custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error('Passwords do not match.');
-      }
-      return true;
-    }),
+      )
+      .normalizeEmail(),
+    body('password', 'The password must be at least 4 characters long.')
+      .isLength({ min: 4 })
+      .trim(),
+    body('confirmPassword')
+      .trim()
+      .custom((value, { req }) => {
+        if (value !== req.body.password) {
+          throw new Error('Passwords do not match.');
+        }
+        return true;
+      }),
   ],
   authController.postSignup
 );
