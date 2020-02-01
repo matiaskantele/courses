@@ -2,7 +2,7 @@ const crypto = require('crypto');
 
 const bcrypt = require('bcryptjs');
 const sgMail = require('@sendgrid/mail');
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -67,7 +67,7 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.postSignup = (req, res, next) => {
-  const { email, password, confirmPassword } = req.body;
+  const { email, password } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).render('auth/signup', {
@@ -76,32 +76,28 @@ exports.postSignup = (req, res, next) => {
       errorMessage: errors.array()[0].msg,
     });
   }
-  User.findOne({ email })
-    .then(userDoc => {
-      if (userDoc) {
-        req.flash('error', 'Email already in use.');
-        return res.redirect('/signup');
-      }
-      return bcrypt.hash(password, 16).then(hashedPassword => {
-        const user = new User({
-          email,
-          password: hashedPassword,
-          cart: { items: [] },
-        });
-        return user.save();
+  bcrypt
+    .hash(password, 16)
+    .then(hashedPassword => {
+      const user = new User({
+        email,
+        password: hashedPassword,
+        cart: { items: [] },
       });
+      return user.save();
     })
     .then(() => {
       res.redirect('/login');
-      return sgMail.send({
-        to: email,
-        from: 'shop@nodeshop.com',
-        subject: 'NodeShop Account Created!',
-        text: 'You are awesome!',
-        html: '<h1>You successfully signed up!</h1>',
-      });
-    })
-    .catch(err => console.log(err));
+      return sgMail
+        .send({
+          to: email,
+          from: 'shop@nodeshop.com',
+          subject: 'NodeShop Account Created!',
+          text: 'You are awesome!',
+          html: '<h1>You successfully signed up!</h1>',
+        })
+        .catch(err => console.log(err));
+    });
 };
 
 exports.postLogout = (req, res, next) => {
