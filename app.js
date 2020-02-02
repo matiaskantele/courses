@@ -14,7 +14,7 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
-const notFoundController = require('./controllers/notFound');
+const errorController = require('./controllers/error');
 const User = require('./models/user');
 
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@nodeshop-7k3bh.gcp.mongodb.net/shop?retryWrites=true&w=majority`;
@@ -47,10 +47,15 @@ app.use((req, res, next) => {
   }
   User.findById(req.session.user._id)
     .then(user => {
+      if (user) {
+        return next();
+      }
       req.user = user;
       next();
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      throw new Error(err);
+    });
 });
 
 app.use((req, res, next) => {
@@ -63,7 +68,14 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
-app.use(notFoundController.get404);
+app.get('/500', errorController.get500);
+
+app.use(errorController.get404);
+
+app.use((error, req, res, next) => {
+  // res.status(error.httpStatusCode).render(...)
+  res.redirect('/500');
+});
 
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 
