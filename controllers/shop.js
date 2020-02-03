@@ -150,20 +150,30 @@ exports.getInvoice = (req, res, next) => {
         return next(new Error('Unauthorized.'));
       }
       const invoiceName = `invoice-${orderId}.pdf`;
-      fs.readFile(
-        path.join('data', 'invoices', `invoice-${orderId}.pdf`),
-        (err, data) => {
-          if (err) {
-            return next(err);
-          }
-          res.setHeader('Content-Type', 'application/pdf');
-          res.setHeader(
-            'Content-Disposition',
-            `inline; filename="${invoiceName}"`
-          );
-          res.send(data);
-        }
+      const invoicePath = path.join(
+        'data',
+        'invoices',
+        `invoice-${orderId}.pdf`
       );
+      // Stream chunks instead of preloading to memory.
+      // fs.readFile(
+      //   invoicePath,
+      //   (err, data) => {
+      //     if (err) {
+      //       return next(err);
+      //     }
+      //     res.setHeader('Content-Type', 'application/pdf');
+      //     res.setHeader(
+      //       'Content-Disposition',
+      //       `inline; filename="${invoiceName}"`
+      //     );
+      //     res.send(data);
+      //   }
+      // );
+      const file = fs.createReadStream(invoicePath);
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `inline; filename="${invoiceName}"`);
+      file.pipe(res);
     })
     .catch(err => next(err));
 };
