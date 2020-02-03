@@ -19,10 +19,30 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-  const { title } = req.body;
-  const { imageUrl } = req.body;
-  const { price } = req.body;
-  const { description } = req.body;
+  const { title, price, description } = req.body;
+  const image = req.file;
+
+  if (!image) {
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/admin/add-product',
+      editing: false,
+      product: {
+        title,
+        price,
+        description,
+      },
+      hasError: true,
+      errorMessage: 'Image formats supported: jpg/jpeg/png',
+      validationErrors: {
+        title: '',
+        imageUrl: '',
+        price: '',
+        description: '',
+      },
+    });
+  }
+
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -32,20 +52,28 @@ exports.postAddProduct = (req, res, next) => {
       editing: false,
       product: {
         title,
-        imageUrl,
         price,
         description,
       },
       hasError: true,
       errorMessage: errors.array()[0].msg,
+      validationErrors: {
+        title: errors.array().find(e => e.param === 'title') ? 'invalid' : '',
+        imageUrl: errors.array().find(e => e.param === 'imageUrl')
+          ? 'invalid'
+          : '',
+        price: errors.array().find(e => e.param === 'price') ? 'invalid' : '',
+        description: errors.array().find(e => e.param === 'description')
+          ? 'invalid'
+          : '',
+      },
     });
   }
-
   const product = new Product({
     title,
+    imageUrl: image.path,
     price,
     description,
-    imageUrl,
     userId: req.user,
   });
   product
@@ -97,7 +125,7 @@ exports.getEditProduct = (req, res, next) => {
 exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
-  const updatedImageUrl = req.body.imageUrl;
+  const image = req.file;
   const updatedPrice = req.body.price;
   const updatedDescription = req.body.description;
 
@@ -110,7 +138,6 @@ exports.postEditProduct = (req, res, next) => {
       editing: true,
       product: {
         title: updatedTitle,
-        imageUrl: updatedImageUrl,
         price: updatedPrice,
         description: updatedDescription,
         _id: prodId,
@@ -138,7 +165,9 @@ exports.postEditProduct = (req, res, next) => {
       product.title = updatedTitle;
       product.price = updatedPrice;
       product.description = updatedDescription;
-      product.imageUrl = updatedImageUrl;
+      if (image) {
+        product.imageUrl = image.path;
+      }
       return product.save().then(() => {
         console.log('Product Updated!');
         res.redirect('/admin/products');

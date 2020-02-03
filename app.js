@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const multer = require('multer');
 
 dotenv.config();
 
@@ -26,9 +27,23 @@ const store = new MongoDBStore({
 });
 const csrfProtection = csrf();
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${new Date().toISOString()}-${file.originalname}`);
+  },
+});
+
+const acceptedFileTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+const fileFilter = (req, file, cb) =>
+  acceptedFileTypes.includes(file.mimetype) ? cb(null, true) : cb(null, false);
+
 app.set('view engine', 'pug');
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer({ storage, fileFilter }).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   session({
