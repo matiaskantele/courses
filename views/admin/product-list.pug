@@ -12,7 +12,7 @@ block content
               header.card__header
                 h1.product__title #{product.title}
               .card__image
-                img(src=product.imageUrl, alt=product.title)
+                img(src=`/${product.imageUrl}` alt=product.title)
               .card__content
                 h2.product__price #{product.price}€
                 p.product__description #{product.description}
@@ -20,7 +20,7 @@ block content
                 a.btn(href="/admin/edit-product/" + product._id + "?edit=true") Edit
                 form(action="/admin/delete-product" method="POST")
                   input(type="hidden" value=product._id name="productId")
-                  input(type="hidden", name="_csrf", value=csrfToken)
+                  input(type="hidden" name="_csrf" value=csrfToken)
                   button.btn(type="submit") Delete
       else
         h1 No Products
