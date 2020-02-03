@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const PDFDocument = require('pdfkit');
+
 const Product = require('../models/product');
 const Order = require('../models/order');
 
@@ -155,6 +157,29 @@ exports.getInvoice = (req, res, next) => {
         'invoices',
         `invoice-${orderId}.pdf`
       );
+
+      const pdf = new PDFDocument();
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `inline; filename="${invoiceName}"`);
+      pdf.pipe(fs.createWriteStream(invoicePath));
+      pdf.pipe(res);
+
+      pdf.fontSize(26).text('Invoice');
+      pdf.fontSize(16).text('--------------------------');
+      let totalPrice = 0;
+      order.products.forEach(prod => {
+        totalPrice += prod.quantity * prod.product.price;
+        pdf.text(
+          `${prod.product.title} - ${prod.quantity} x ${prod.product.price}€`
+        );
+      });
+      pdf.text('--------------------------');
+      pdf
+        .fontSize(20)
+        .text('Total Price: ', { continued: true })
+        .text(`${totalPrice}€`, { underline: true });
+
+      pdf.end();
       // Stream chunks instead of preloading to memory.
       // fs.readFile(
       //   invoicePath,
@@ -170,10 +195,9 @@ exports.getInvoice = (req, res, next) => {
       //     res.send(data);
       //   }
       // );
-      const file = fs.createReadStream(invoicePath);
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `inline; filename="${invoiceName}"`);
-      file.pipe(res);
+
+      // const file = fs.createReadStream(invoicePath);
+      // file.pipe(res);
     })
     .catch(err => next(err));
 };
