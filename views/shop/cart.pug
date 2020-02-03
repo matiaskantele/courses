@@ -1,7 +1,7 @@
 extends ../layouts/main-layout.pug
 
 block styles
-  link(rel="stylesheet", href="/css/cart.css")
+  link(rel="stylesheet" href="/css/cart.css")
 
 block content
   main
@@ -11,13 +11,13 @@ block content
           li.cart__item
             p #{p.productId.title} (#{p.quantity})
             form(action="/cart-delete-item" method="POST")
-              input(type="hidden", name="productId", value=p.productId._id)
-              input(type="hidden", name="_csrf", value=csrfToken)
+              input(type="hidden" name="productId" value=p.productId._id)
+              input(type="hidden" name="_csrf" value=csrfToken)
               button.btn.danger(type="submit") Delete
       hr
       .centered
         form(action="/create-order" method="POST")
-          input(type="hidden", name="_csrf", value=csrfToken)
+          input(type="hidden" name="_csrf" value=csrfToken)
           button.btn(type="submit") Order Now!
     else
       h1 No Products in Cart!
