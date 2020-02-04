@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const PDFDocument = require('pdfkit');
 
 const Product = require('../models/product');
@@ -132,6 +133,77 @@ exports.postCartDeleteProduct = (req, res, next) => {
     });
 };
 
+exports.getCheckout = (req, res, next) => {
+  let products;
+  let total = 0;
+  req.user
+    .populate('cart.items.productId')
+    .execPopulate()
+    .then(user => {
+      products = user.cart.items;
+      total = 0;
+      products.forEach(p => {
+        total += p.quantity * p.productId.price;
+      });
+      return stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: products.map(p => ({
+          name: p.productId.title,
+          description: p.productId.description,
+          amount: p.productId.price * 100,
+          currency: 'eur',
+          quantity: p.quantity,
+        })),
+        success_url: `${req.protocol}://${req.get('host')}/checkout/success`,
+        cancel_url: `${req.protocol}://${req.get('host')}/checkout/cancel`,
+      });
+    })
+    .then(session => {
+      res.render('shop/checkout', {
+        pageTitle: 'Checkout',
+        path: '/checkout',
+        products,
+        total,
+        sessionId: session.id,
+      });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
+exports.getCheckoutSuccess = (req, res, next) => {
+  // Note: Route accessible to user and the payment step can be bypassed.
+  // Webhook implementation will help prevent this:
+  // https://stripe.com/docs/payments/handling-payment-events#build-your-own-webhook
+  req.user
+    .populate('cart.items.productId')
+    .execPopulate()
+    .then(user => {
+      const products = user.cart.items.map(i => ({
+        quantity: i.quantity,
+        product: { ...i.productId._doc },
+      }));
+      const order = new Order({
+        user: {
+          email: req.user.email,
+          userId: req.user,
+        },
+        products,
+      });
+      return order.save();
+    })
+    .then(() => req.user.clearCart())
+    .then(() => res.redirect('/orders'))
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+};
+
 exports.postOrder = (req, res, next) => {
   req.user
     .populate('cart.items.productId')
@@ -234,11 +306,4 @@ exports.getInvoice = (req, res, next) => {
       // file.pipe(res);
     })
     .catch(err => next(err));
-};
-
-exports.getCheckout = (req, res, next) => {
-  res.render('shop/checkout', {
-    pageTitle: 'Checkout',
-    path: '/checkout',
-  });
 };

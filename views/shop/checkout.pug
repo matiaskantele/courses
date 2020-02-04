@@ -1,5 +1,27 @@
 extends ../layouts/main-layout.pug
 
 block styles
-  link(rel="stylesheet" href="/css/forms.css")
-  link(rel="stylesheet" href="/css/product.css")
+  link(rel="stylesheet" href="/css/cart.css")
+
+block content
+  main
+    if products.length > 0
+      ul.cart__item-list
+        each p in products
+          li.cart__item
+            h1 #{p.productId.title}
+            h2 Quantity: #{p.quantity}
+      .centered
+        h2 Total: #{total}
+      .centered
+        button.btn#order-btn ORDER
+        script(src='https://js.stripe.com/v3/')
+        script.
+          const stripe = Stripe('pk_test_mIkbHmpQLuIMcEtb72ubs3jh00MAMroKpU');
+          const orderBtn = document.getElementById('order-btn');
+          orderBtn.addEventListener('click', () => {
+            stripe.redirectToCheckout({
+              "sessionId": "#{sessionId}",
+            });
+          });
+
