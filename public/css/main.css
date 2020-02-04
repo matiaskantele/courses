@@ -280,4 +280,8 @@ form {
   .user-message {
     width: 30rem;
   }
+
+  .mobile-nav {
+    display: none;
+  }
 }

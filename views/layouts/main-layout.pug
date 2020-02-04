@@ -38,31 +38,31 @@ html(lang="en")
               form(action="/logout", method="POST")
                 input(type="hidden", name="_csrf", value=csrfToken)
                 button(type="submit") Logout
-    nav.mobile-nav
-      ul.mobile-nav__item-list
-        li.mobile-nav__item
-          a(href="/" class=(path === "/" ? "active" : "")) Shop
-        li.mobile-nav__item
-          a(href="/" class=(path === "/products" ? "active" : "")) Products
-        if isAuthenticated
+      nav.mobile-nav
+        ul.mobile-nav__item-list
           li.mobile-nav__item
-            a(href="/" class=(path === "/cart" ? "active" : "")) Cart
+            a(href="/" class=(path === "/" ? "active" : "")) Shop
           li.mobile-nav__item
-            a(href="/" class=(path === "/orders" ? "active" : "")) Orders
-          li.mobile-nav__item
-            a(href="/" class=(path === "/admin/add-product" ? "active" : "")) Add Product
-          li.mobile-nav__item
-            a(href="/" class=(path === "/admin/products" ? "active" : "")) Admin Products
-        if !isAuthenticated
-          li.mobile-nav__item
-            a(href="/login" class=(path === "/login" ? "active" : "")) Login
-          li.mobile-nav__item
-            a(href="/signup" class=(path === "/signup" ? "active" : "")) Signup
-        else
-          li.mobile-nav__item
-            form(action="/logout", method="POST")
-              input(type="hidden" name="_csrf" value=csrfToken)
-              button(type="submit") Logout
+            a(href="/" class=(path === "/products" ? "active" : "")) Products
+          if isAuthenticated
+            li.mobile-nav__item
+              a(href="/" class=(path === "/cart" ? "active" : "")) Cart
+            li.mobile-nav__item
+              a(href="/" class=(path === "/orders" ? "active" : "")) Orders
+            li.mobile-nav__item
+              a(href="/" class=(path === "/admin/add-product" ? "active" : "")) Add Product
+            li.mobile-nav__item
+              a(href="/" class=(path === "/admin/products" ? "active" : "")) Admin Products
+          if !isAuthenticated
+            li.mobile-nav__item
+              a(href="/login" class=(path === "/login" ? "active" : "")) Login
+            li.mobile-nav__item
+              a(href="/signup" class=(path === "/signup" ? "active" : "")) Signup
+          else
+            li.mobile-nav__item
+              form(action="/logout", method="POST")
+                input(type="hidden" name="_csrf" value=csrfToken)
+                button(type="submit") Logout
 
     block content
     script(src='/js/main.js')
