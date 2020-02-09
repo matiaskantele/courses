@@ -4,7 +4,7 @@
   "description": "Webshop built with Node.js",
   "main": "app.js",
   "scripts": {
-    "start": "pm2 start app.js --watch --ignore-watch='.git data images node_modules api' && pm2 logs",
+    "start": "pm2 start app.js --watch --ignore-watch='.git data images node_modules' && pm2 logs",
     "stop": "pm2 stop 0 --watch",
     "update": "pm2 update",
     "test": "echo \"Error: no test specified\" && exit 1",
