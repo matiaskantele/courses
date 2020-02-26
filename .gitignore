@@ -15,3 +15,7 @@ npm-debug.log*
 # Uploaded product images & invoices
 images/
 invoices/
+
+# SSL/TLS
+server.cert
+server.key
