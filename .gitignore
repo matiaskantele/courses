@@ -1,21 +1,2 @@
-# Dependency directory
-node_modules/
-
-# Logs
-logs
-*.log
-npm-debug.log*
-
-# macOS
+# MacOS
 .DS_Store
-
-# Environment variables
-.env
-
-# Uploaded product images & invoices
-images/
-invoices/
-
-# SSL/TLS
-server.cert
-server.key
