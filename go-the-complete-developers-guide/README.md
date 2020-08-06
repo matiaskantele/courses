@@ -11,6 +11,6 @@
 - Apply Interfaces to dramatically simplify complex programs
 - Use types to future-proof your code and reduce the difficulty of refactors
 
-## Status: **Completed**
+## Completion: **100%**
 
 ![Certificate of Completion](certificate.jpg)
