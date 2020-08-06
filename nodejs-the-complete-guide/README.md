@@ -10,6 +10,6 @@
 - Understand the NodeJS ecosystem and build server-side rendered apps, REST APIs and GraphQL APIs
 - Get a thorough introduction to DenoJS
 
-## Completion: **100%**
+## Completion: **90%**
 
 ![Certificate of Completion](certificate.jpg)
