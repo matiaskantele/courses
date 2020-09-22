@@ -27,7 +27,7 @@ const toppingSchema = {
       vegetarian: 'vegetarian',
     },
     prepare: ({ name, vegetarian }) => ({
-      title: `${name} ${vegetarian && '🌱'}`,
+      title: `${name} ${vegetarian ? '🌱' : ''}`,
     }),
   },
 };
