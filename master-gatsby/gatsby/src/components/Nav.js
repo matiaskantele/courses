@@ -10,7 +10,7 @@ const links = [
 ];
 
 const listItem = ({ to, name }) => (
-  <li>
+  <li key={name}>
     <Link to={to}>{name}</Link>
   </li>
 );

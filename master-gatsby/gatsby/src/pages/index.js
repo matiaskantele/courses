@@ -2,7 +2,7 @@ import React from 'react';
 
 const HomePage = () => (
   <>
-    <p>Hey! This is the home page.</p>
+    <p>Hey! This is the home page!</p>
   </>
 );
 
