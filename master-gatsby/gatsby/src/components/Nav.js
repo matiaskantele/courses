@@ -10,7 +10,7 @@ const StyledNav = styled.nav`
     transform: translateY(-25%);
   }
   ul {
-    margin: 0;
+    margin: -6rem 0 0 0;
     padding: 0;
     text-align: center;
     list-style: none;
@@ -40,6 +40,9 @@ const StyledNav = styled.nav`
     font-size: 3rem;
     text-decoration: none;
     &:hover {
+      color: var(--red);
+    }
+    &[aria-current='page'] {
       color: var(--red);
     }
   }

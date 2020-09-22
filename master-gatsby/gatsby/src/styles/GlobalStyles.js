@@ -1,4 +1,5 @@
 import { Global, css } from '@emotion/core';
+import 'normalize.css';
 
 import bg from '../assets/images/bg.svg';
 import stripes from '../assets/images/stripes.svg';
