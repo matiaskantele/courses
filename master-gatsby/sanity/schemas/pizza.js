@@ -50,18 +50,41 @@ const pizzaSchema = {
     select: {
       title: 'name',
       media: 'image',
+      vege0: 'toppings.0.vegetarian',
+      vege1: 'toppings.1.vegetarian',
+      vege2: 'toppings.2.vegetarian',
+      vege3: 'toppings.3.vegetarian',
       topping0: 'toppings.0.name',
       topping1: 'toppings.1.name',
       topping2: 'toppings.2.name',
       topping3: 'toppings.3.name',
     },
-    prepare: ({ title, media, ...toppings }) =>
+    prepare: ({
+      title,
+      media,
+      vege0,
+      vege1,
+      vege2,
+      vege3,
+      topping0,
+      topping1,
+      topping2,
+      topping3,
+    }) =>
       // 1. Filter undefined toppings out
       // 2. return the preview object for the pizza
       ({
-        title,
+        title: `${title}${
+          [vege0, vege1, vege2, vege3]
+            .filter((t) => typeof t !== 'undefined')
+            .every((t) => t)
+            ? ' 🌱'
+            : ''
+        }`,
         media,
-        subtitle: Object.values(toppings).filter(Boolean).join(', '),
+        subtitle: [topping0, topping1, topping2, topping3]
+          .filter(Boolean)
+          .join(', '),
       }),
   },
 };
