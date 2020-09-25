@@ -1,6 +1,8 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 
+import PizzaList from '../components/PizzaList';
+
 export const query = graphql`
   query PizzaQuery {
     pizzas: allSanityPizza {
@@ -32,13 +34,10 @@ export const query = graphql`
   }
 `;
 
-const Pizzas = ({ data }) => {
-  const pizzas = data.pizzas.nodes;
-  return (
-    <>
-      <p>Hey! There are {pizzas.length} pizzas!</p>
-    </>
-  );
-};
+const Pizzas = ({ data: { pizzas } }) => (
+  <>
+    <PizzaList pizzas={pizzas.nodes} />
+  </>
+);
 
 export default Pizzas;
