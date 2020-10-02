@@ -22,7 +22,7 @@ const StyledToppings = styled.div`
       padding: 2px 5px;
     }
 
-    .active {
+    &[aria-current='page'] {
       background: var(--yellow);
     }
   }
@@ -73,6 +73,10 @@ const ToppingsFilter = () => {
     <>
       <h2>Filter by topping</h2>
       <StyledToppings>
+        <Link to="/pizzas">
+          <span className="name">All</span>
+          <span className="count">{pizzas.nodes.length}</span>
+        </Link>
         {/* // Loop over the list of toppings -> display toppings with pizza counts */}
         {toppings.map((topping) => (
           <Link key={topping.id} to={`/topping/${topping.name}`}>

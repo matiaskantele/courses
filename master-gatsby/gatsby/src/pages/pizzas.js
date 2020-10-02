@@ -5,8 +5,10 @@ import ToppingsFilter from '../components/ToppingsFilter';
 import PizzaList from '../components/PizzaList';
 
 export const query = graphql`
-  query PizzaQuery {
-    pizzas: allSanityPizza {
+  query PizzaQuery($topping: [String]) {
+    pizzas: allSanityPizza(
+      filter: { toppings: { elemMatch: { name: { in: $topping } } } }
+    ) {
       nodes {
         name
         id
