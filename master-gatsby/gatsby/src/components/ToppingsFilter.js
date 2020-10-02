@@ -59,6 +59,7 @@ const ToppingsFilter = () => {
           toppings {
             id
             name
+            vegetarian
           }
         }
       }
