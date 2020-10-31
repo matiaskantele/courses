@@ -1,4 +1,4 @@
-import path from 'path';
+import path, { resolve } from 'path';
 import fetch from 'isomorphic-fetch';
 
 const generatePizzaPages = async ({ graphql, actions }) => {
@@ -101,10 +101,21 @@ const generateSliceMasterPages = async ({ graphql, actions }) => {
       }
     }
   `);
+
+  data.slicemasters.nodes.forEach((slicemaster) => {
+    actions.createPage({
+      component: resolve('./src/templates/SlicemasterPage.js'),
+      path: `/slicemaster/${slicemaster.slug.current}`,
+      context: {
+        name: slicemaster.person,
+        slug: slicemaster.slug.current,
+      },
+    });
+  });
+
   const pageSize = parseInt(process.env.GATSBY_PAGE_SIZE);
   const pageCount = Math.ceil(data.slicemasters.totalCount / pageSize);
   [...Array(pageCount)].forEach((_, i) => {
-    console.log(`Creating page ${i}`);
     actions.createPage({
       path: `/slicemasters/${i + 1}`,
       component: path.resolve('./src/pages/slicemasters.js'),
