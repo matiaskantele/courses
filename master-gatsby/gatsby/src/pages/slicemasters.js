@@ -3,6 +3,8 @@ import { graphql, Link } from 'gatsby';
 import Img from 'gatsby-image';
 import styled from '@emotion/styled';
 
+import Pagination from '../components/Pagination';
+
 const SliceMasterGrid = styled.div`
   display: grid;
   grid-gap: 2rem;
@@ -36,7 +38,7 @@ const SliceMaster = styled.div`
 `;
 
 export const query = graphql`
-  query($pageSize: Int = 4, $skip: Int = 0) {
+  query($pageSize: Int = 3, $skip: Int = 0) {
     slicemasters: allSanityPerson(limit: $pageSize, skip: $skip) {
       totalCount
       nodes {
@@ -60,13 +62,20 @@ export const query = graphql`
 
 const SliceMasters = ({
   data: {
-    slicemasters: { nodes: slicemasters },
+    slicemasters: { nodes: slicemasters, totalCount },
   },
+  pageContext: { currentPage, skip },
 }) => {
   console.log(slicemasters);
   return (
     <>
-      <p>{process.env.GATSBY_PAGE_SIZE}</p>
+      <Pagination
+        pageSize={parseInt(process.env.GATSBY_PAGE_SIZE)}
+        totalCount={totalCount}
+        currentPage={currentPage || 1}
+        skip={skip}
+        base="/slicemasters"
+      />
       <SliceMasterGrid>
         {slicemasters.map((person) => (
           <SliceMaster key={person.id}>
