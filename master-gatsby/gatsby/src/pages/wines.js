@@ -2,6 +2,8 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import styled from '@emotion/styled';
 
+import SEO from '../components/SEO';
+
 const WineGrid = styled.div`
   display: grid;
   gap: 2rem;
@@ -43,31 +45,29 @@ const Wines = ({
   data: {
     allWine: { nodes: wines },
   },
-}) => {
-  console.log(wines);
-  return (
-    <>
-      <h2>{`We have ${wines.length} Wines available. Dine in Only!`}</h2>
-      <WineGrid>
-        {wines.map((wine) => {
-          const rating = Math.round(wine.rating.average);
-          return (
-            <SingleWine key={wine.id}>
-              <img src={wine.image} alt={wine.wine} />
-              <h3>{`${wine.winery} - ${wine.wine}`}</h3>
-              <p title={`${rating} out of 5 stars`}>
-                {`⭐`.repeat(rating)}
-                <span style={{ filter: `grayscale(100%)` }}>
-                  {`⭐`.repeat(5 - rating)}
-                </span>
-                <span>({wine.rating.reviews})</span>
-              </p>
-            </SingleWine>
-          );
-        })}
-      </WineGrid>
-    </>
-  );
-};
+}) => (
+  <>
+    <SEO title={`Wines! We have ${wines.length} in stock`} />
+    <h2>{`We have ${wines.length} Wines available. Dine in Only!`}</h2>
+    <WineGrid>
+      {wines.map((wine) => {
+        const rating = Math.round(wine.rating.average);
+        return (
+          <SingleWine key={wine.id}>
+            <img src={wine.image} alt={wine.wine} />
+            <h3>{`${wine.winery} - ${wine.wine}`}</h3>
+            <p title={`${rating} out of 5 stars`}>
+              {`⭐`.repeat(rating)}
+              <span style={{ filter: `grayscale(100%)` }}>
+                {`⭐`.repeat(5 - rating)}
+              </span>
+              <span>({wine.rating.reviews})</span>
+            </p>
+          </SingleWine>
+        );
+      })}
+    </WineGrid>
+  </>
+);
 
 export default Wines;

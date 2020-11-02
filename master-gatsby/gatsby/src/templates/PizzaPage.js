@@ -3,6 +3,8 @@ import { graphql } from 'gatsby';
 import Img from 'gatsby-image';
 import styled from '@emotion/styled';
 
+import SEO from '../components/SEO';
+
 // Dynamic based on slug in context set in gatsby-node.js
 export const query = graphql`
   query($slug: String!) {
@@ -32,17 +34,20 @@ const PizzaInfo = styled.div`
 `;
 
 const PizzaPage = ({ data: { pizza } }) => (
-  <PizzaInfo>
-    <Img fluid={pizza.image.asset.fluid} />
-    <div>
-      <h2 className="mark">{pizza.name}</h2>
-      <ul>
-        {pizza.toppings.map((topping) => (
-          <li key={topping.id}>{topping.name}</li>
-        ))}
-      </ul>
-    </div>
-  </PizzaInfo>
+  <>
+    <SEO title={pizza.name} image={pizza.image?.asset?.fluid?.src} />
+    <PizzaInfo>
+      <Img fluid={pizza.image.asset.fluid} />
+      <div>
+        <h2 className="mark">{pizza.name}</h2>
+        <ul>
+          {pizza.toppings.map((topping) => (
+            <li key={topping.id}>{topping.name}</li>
+          ))}
+        </ul>
+      </div>
+    </PizzaInfo>
+  </>
 );
 
 export default PizzaPage;
