@@ -12,3 +12,9 @@ const sizes = {
 };
 
 export const calculatePizzaPrice = (cents, size) => cents * sizes[size];
+
+export const calculateOrderTotal = (order, pizzas) =>
+  order.reduce((acc, orderItem) => {
+    const pizza = pizzas.find((p) => p.id === orderItem.id);
+    return acc + calculatePizzaPrice(pizza.price, orderItem.size);
+  }, 0);
