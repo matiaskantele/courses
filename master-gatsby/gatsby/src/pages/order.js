@@ -41,10 +41,7 @@ const Order = ({
   },
 }) => {
   const { values, updateValue } = useForm({ name: '', email: '' });
-  const { order, addToOrder, removeFromOrder } = usePizza({
-    pizzas,
-    inputs: values,
-  });
+  const { order, addToOrder, removeFromOrder } = usePizza();
   return (
     <>
       <SEO title="Order a Pizza!" />
