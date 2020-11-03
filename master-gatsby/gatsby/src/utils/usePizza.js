@@ -27,7 +27,7 @@ const usePizza = ({ pizzas, values }) => {
       name: values.name,
       email: values.email,
     };
-    console.log(process.env.GATSBY_SERVERLESS_BASE);
+
     const res = await fetch(
       `${process.env.GATSBY_SERVERLESS_BASE}/placeOrder`,
       {

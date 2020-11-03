@@ -31,7 +31,13 @@ const generateOrderEmail = ({ order, total }) => `
     </style>
   </div>`;
 
+const wait = (ms = 0) =>
+  new Promise((resolve, reject) => {
+    setTimeout(resolve, ms);
+  });
+
 exports.handler = async (event, context) => {
+  await wait(500);
   const body = JSON.parse(event.body);
   const requiredFields = ['email', 'name', 'order'];
 
@@ -44,6 +50,15 @@ exports.handler = async (event, context) => {
         }),
       };
     }
+  }
+
+  if (!body.order.length) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        message: `Oops! Forgot to add pizzas to your order!`,
+      }),
+    };
   }
 
   const info = await transporter.sendMail({
