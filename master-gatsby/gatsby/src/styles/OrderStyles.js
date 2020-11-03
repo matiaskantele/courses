@@ -22,6 +22,9 @@ export const StyledOrder = styled.form`
       grid-column: span 2;
     }
   }
+  input:last-of-type {
+    display: none;
+  }
 `;
 
 export const StyledMenuItem = styled.div`

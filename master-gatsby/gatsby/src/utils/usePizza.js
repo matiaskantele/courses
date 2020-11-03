@@ -26,6 +26,7 @@ const usePizza = ({ pizzas, values }) => {
       total: formatMoney(calculateOrderTotal(order, pizzas)),
       name: values.name,
       email: values.email,
+      address: values.address,
     };
 
     const res = await fetch(

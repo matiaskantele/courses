@@ -40,7 +40,7 @@ const Order = ({
     pizzas: { nodes: pizzas },
   },
 }) => {
-  const { values, updateValue } = useForm({ name: '', email: '' });
+  const { values, updateValue } = useForm({ name: '', email: '', address: '' });
   const {
     order,
     addToOrder,
@@ -72,6 +72,12 @@ const Order = ({
                 type="text"
                 name="email"
                 value={values.email}
+                onChange={updateValue}
+              />
+              <input
+                type="text"
+                name="address"
+                value={values.address}
                 onChange={updateValue}
               />
             </fieldset>

@@ -37,8 +37,14 @@ const wait = (ms = 0) =>
   });
 
 exports.handler = async (event, context) => {
-  await wait(500);
   const body = JSON.parse(event.body);
+  if (body.address) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'Beep Boop no no' }),
+    };
+  }
+  await wait(500);
   const requiredFields = ['email', 'name', 'order'];
 
   for (const field of requiredFields) {
