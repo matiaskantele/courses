@@ -6,13 +6,13 @@ import styled from '@emotion/styled';
 import SEO from '../components/SEO';
 import Pagination from '../components/Pagination';
 
-const SliceMasterGrid = styled.div`
+const SlicemasterGrid = styled.div`
   display: grid;
   grid-gap: 2rem;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 `;
 
-const SliceMaster = styled.div`
+const Slicemaster = styled.div`
   a {
     text-decoration: none;
   }
@@ -61,7 +61,7 @@ export const query = graphql`
   }
 `;
 
-const SliceMasters = ({
+const Slicemasters = ({
   data: {
     slicemasters: { nodes: slicemasters, totalCount },
   },
@@ -78,9 +78,9 @@ const SliceMasters = ({
         skip={skip}
         base="/slicemasters"
       />
-      <SliceMasterGrid>
+      <SlicemasterGrid>
         {slicemasters.map((person) => (
-          <SliceMaster key={person.id}>
+          <Slicemaster key={person.id}>
             <Link to={`/slicemaster/${person.slug.current}`}>
               <h2>
                 <span className="mark">{person.name}</span>
@@ -88,11 +88,11 @@ const SliceMasters = ({
             </Link>
             <Img fluid={person.image.asset.fluid} />
             <p className="description">{person.description}</p>
-          </SliceMaster>
+          </Slicemaster>
         ))}
-      </SliceMasterGrid>
+      </SlicemasterGrid>
     </>
   );
 };
 
-export default SliceMasters;
+export default Slicemasters;

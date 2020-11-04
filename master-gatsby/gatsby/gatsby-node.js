@@ -86,7 +86,7 @@ const fetchBeersAndTurnIntoNodes = async ({
   }
 };
 
-const generateSliceMasterPages = async ({ graphql, actions }) => {
+const generateSlicemasterPages = async ({ graphql, actions }) => {
   const { data } = await graphql(`
     query {
       slicemasters: allSanityPerson {
@@ -134,10 +134,10 @@ export const sourceNodes = async (params) => {
 };
 
 export const createPages = async (params) => {
-  // Create dynamically & concurrently: Pizzas, Toppings, SliceMasters
+  // Create dynamically & concurrently: Pizzas, Toppings, Slicemasters
   await Promise.all([
     generatePizzaPages(params),
     generateToppingsPages(params),
-    generateSliceMasterPages(params),
+    generateSlicemasterPages(params),
   ]);
 };

@@ -4,7 +4,7 @@ const personSchema = {
   // computer name
   name: 'person',
   // visible title
-  title: 'SliceMasters',
+  title: 'Slicemasters',
   type: 'document',
   icon,
   fields: [

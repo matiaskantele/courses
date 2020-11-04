@@ -51,7 +51,7 @@ const StyledNav = styled.nav`
 const links = [
   { to: '/', name: 'Hot Now' },
   { to: '/pizzas', name: 'Pizza Menu' },
-  { to: '/slicemasters', name: 'SliceMasters' },
+  { to: '/slicemasters', name: 'Slicemasters' },
   { to: '/order', name: 'Order Ahead!' },
 ];
 

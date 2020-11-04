@@ -21,7 +21,7 @@ export const query = graphql`
   }
 `;
 
-const SliceMasterPage = ({
+const SlicemasterPage = ({
   data: {
     person: { image, name, description },
   },
@@ -38,4 +38,4 @@ const SliceMasterPage = ({
   </>
 );
 
-export default SliceMasterPage;
+export default SlicemasterPage;
