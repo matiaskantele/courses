@@ -17,8 +17,7 @@ const query = {
 };
 
 const useLatestData = () => {
-  const [slicemasters, setSlicemasters] = useState();
-  const [hotSlices, setHotSlices] = useState();
+  const [data, setData] = useState({ hotSlices: [], slicemasters: [] });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,16 +30,15 @@ const useLatestData = () => {
       });
       const {
         data: {
-          StoreSettings: { hotSlices: slices, slicemaster },
+          StoreSettings: { hotSlices, slicemaster },
         },
       } = await response.json();
-      setHotSlices(slices);
-      setSlicemasters(slicemaster);
+      setData({ hotSlices, slicemasters: slicemaster });
     };
     fetchData();
   }, []);
 
-  return [hotSlices, slicemasters];
+  return data;
 };
 
 export default useLatestData;

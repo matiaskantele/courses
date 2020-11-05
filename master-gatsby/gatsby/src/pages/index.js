@@ -15,10 +15,8 @@ const CurrentlySlicing = ({ slicemasters }) => (
 );
 
 const HomePage = () => {
-  const [hotSlices, slicemasters] = useLatestData();
+  const { hotSlices, slicemasters } = useLatestData();
   console.log('RENDERING INDEX');
-  console.log(hotSlices);
-  console.log(slicemasters);
 
   return (
     <div className="center">
