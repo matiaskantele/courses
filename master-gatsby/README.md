@@ -27,4 +27,6 @@ Some of the topics we touch upon are:
 - Building
 - Deployment & Hosting
 
-## Completion: **0%**
+## Completion: **100%**
+
+![Certificate of Completion](certificate.jpg)
