@@ -44,6 +44,30 @@ const StyledNav = styled.nav`
     &[aria-current='page'] {
       color: var(--red);
     }
+    @media (max-width: 800px) {
+      font-size: 2rem;
+    }
+  }
+  @media (max-width: 600px) {
+    --columns: 4;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--grey);
+    padding-bottom: 2rem;
+    ul {
+      grid-template-rows: auto;
+      grid-template-columns: repeat(var(--columns), 1fr);
+      justify-items: center;
+    }
+    .logo-item {
+      order: 0;
+      grid-column: 1 / -1;
+    }
+    .logo {
+      transform: none;
+    }
+  }
+  @media (max-width: 500px) {
+    --columns: 2;
   }
 `;
 
@@ -64,7 +88,7 @@ const Nav = () => (
   <StyledNav>
     <ul>
       {links.slice(0, 2).map((link) => listItem(link))}
-      <li>
+      <li className="logo-item">
         <Logo />
       </li>
       {links.slice(2).map((link) => listItem(link))}
