@@ -1,15 +1,31 @@
 import { useEffect, useState } from 'react';
 
+// Fake out gql for VS Code syntax highlighting
+const gql = String.raw;
+
+const details = `
+  name
+  _id
+  image {
+    asset {
+      url
+      metadata {
+        lqip
+      }
+    }
+  }
+`;
+
 const query = {
-  query: `
-    query{
+  query: gql`
+    query {
       StoreSettings(id: "downtown") {
         name
         hotSlices {
-          name
+          ${details}
         }
-        slicemaster{
-          name
+        slicemaster {
+          ${details}
         }
       }
     }
@@ -17,7 +33,7 @@ const query = {
 };
 
 const useLatestData = () => {
-  const [data, setData] = useState({ hotSlices: [], slicemasters: [] });
+  const [data, setData] = useState({ hotSlices: null, slicemasters: null });
 
   useEffect(() => {
     const fetchData = async () => {
