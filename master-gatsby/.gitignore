@@ -4,5 +4,8 @@ node_modules/
 
 .cache/
 public/
+dist/
 
 .env
+
+yarn.lock
